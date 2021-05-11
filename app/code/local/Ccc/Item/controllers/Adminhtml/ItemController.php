@@ -45,14 +45,19 @@ class Ccc_Item_Adminhtml_ItemController extends Mage_Adminhtml_Controller_Action
                 $postData = $this->getRequest()->getPost();
                 if ($model->getId()) {
                     $model->addData($postData);
+                    if ($model->save()) {
+                        Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('item')->__('Item Edited Successfully'));
+                    }
                 } else {
                     $model->setData($postData);
                     $model->setCreatedDate(Mage::getModel('core/date')->date('Y-m-d H:i:s'));
 
-                    // $model->createdDate = date('Y-m-d H:i:s');
+                    if ($model->save()) {
+                        Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('item')->__('Item Created Successfully'));
+                    }
                 }
-                $model->save();
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('item')->__('Item Created Successfully'));
+                // $model->save();
+                // Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('item')->__('Item Created Successfully'));
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError(Mage::helper('item')->__($e->getMessage()));
             }
